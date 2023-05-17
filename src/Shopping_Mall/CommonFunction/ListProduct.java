@@ -6,17 +6,23 @@ import java.util.ArrayList;
 public class ListProduct {
     protected ArrayList<Product> listProduct = new ArrayList<Product>();
 
-    public void searchProduct(String str) {
-        ListProduct newList = new ListProduct();
+    public ArrayList<Product> getListProduct() {
+        return listProduct;
     }
 
+    public void setListProduct(ArrayList<Product> listProduct) {
+        this.listProduct = listProduct;
+    }
+
+    public int getSize() {
+        return listProduct.size();
+    }
     public void addProduct(Product product) {
         this.listProduct.add(product);
     }
 
     public void showListProduct() {
         for(Product product: listProduct) {
-            System.out.println("----------------------------");
             product.showProduct();
         }
     }

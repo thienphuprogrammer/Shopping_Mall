@@ -7,11 +7,16 @@ public class Product implements Serializable {
     private String name;
     private String type;
     private String description;
-    private String id;
+    private int id;
     private float price;
     private int count;
 
-    public Product(String name, String type, String description, String id, float price, int count) {
+    public Product() {
+        // Default constructor with default values
+        this("", "", "", 0, 0.0f, 0);
+    }
+
+    public Product(String name, String type, String description, int id, float price, int count) {
         this.name = name;
         this.type = type;
         this.description = description;
@@ -44,11 +49,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -69,11 +74,11 @@ public class Product implements Serializable {
     }
 
     public void showProduct() {
-        System.out.println("Name: " + name);
-        System.out.println("id: " + id);
-        System.out.println("Type: " + type);
-        System.out.println("Description: " + description);
-        System.out.println("price: " + price);
-        System.out.println("Count: " + count);
+        System.out.print("Name: " + name);
+        System.out.print(", id: " + id);
+        System.out.print(", Type: " + type);
+        System.out.print(", Description: " + description);
+        System.out.print(", price: " + price);
+        System.out.print(", Count: " + count);
     }
 }
