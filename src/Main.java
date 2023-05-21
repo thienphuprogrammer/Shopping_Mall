@@ -1,14 +1,20 @@
 import Shopping_Mall.CommonFunction.ListProduct;
-import Shopping_Mall.UserObject.User;
+//import Shopping_Mall.UserObject.User;
+import CommonFunction.AdminObject;
+import CommonFunction.LoginObject;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        ListProduct listProduct = new ListProduct();
-        listProduct.loadListProduct("product.bin");
+        Scanner sc = new Scanner(System.in);
 
+        System.out.print("Username: ");
+        String username = sc.next();
 
-        new User();
+        System.out.print("Password: ");
+        int password = sc.nextInt();
 
-        listProduct.saveListProduct("product.bin");
+        LoginObject.Login(username, password);
     }
 }
