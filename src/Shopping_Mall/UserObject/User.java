@@ -1,26 +1,26 @@
 package Shopping_Mall.UserObject;
-
 import java.util.ArrayList;
 
+import static Shopping_Mall.CommonFunction.Account.AccountUser.AccountUser;
+
 public class User {
-    private String nameUser;
-    private String password;
-
-    private ArrayList<MenuProduct> menuProducts = new ArrayList<>();
+    private ArrayList<MenuProductUSer> menuProducts = new ArrayList<>();
     public User() {
-        System.out.println("Hello!!");
+        MenuProductUSer listProduct = new MenuProductUSer();
+        listProduct.loadListProduct("src/Data/product.bin");
+
+        boolean statusLogIn = AccountUser();
+        while(statusLogIn) {
+            break;
+        }
     }
 
-    private void signUp() {
-        ;
-    }
+    void menuChoice() {
 
-    private void logIn() {
-        ;
+
     }
 
     private void LogOut() {
         ;
     }
-
 }

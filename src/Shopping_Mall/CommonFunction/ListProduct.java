@@ -2,10 +2,10 @@ package Shopping_Mall.CommonFunction;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ListProduct {
     protected ArrayList<Product> listProduct = new ArrayList<Product>();
-
     public ArrayList<Product> getListProduct() {
         return listProduct;
     }
@@ -19,6 +19,39 @@ public class ListProduct {
     }
     public void addProduct(Product product) {
         this.listProduct.add(product);
+    }
+
+    public void removeProduct(int idProduct) {
+        Iterator<Product> iterator = listProduct.iterator();
+
+        while(iterator.hasNext()) {
+            Product product = iterator.next();
+
+            if(product.getId() == idProduct) {
+                iterator.remove();
+                break;
+            }
+        }
+    }
+
+    public void searchProduct(String str) {
+        ListProduct newList = this;
+
+        for (Product product : listProduct) {
+            if (str.equals(String.valueOf(product.getId()))
+                    || product.getName().equals(str)) {
+                newList.addProduct(product);
+            }
+        }
+        if (newList.getSize() == 0) {
+            System.out.println("Không tìm thấy sản phẩm mà bạn đã cung cấp thông tin");
+        }
+        else {
+            System.out.println("Có " + newList.getSize() + " sản phẩm có thông tin giống trên: ");
+            for(Product product : newList.getListProduct()){
+                product.showProduct();
+            }
+        }
     }
 
     public void showListProduct() {

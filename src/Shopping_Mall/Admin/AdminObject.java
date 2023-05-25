@@ -1,17 +1,12 @@
-package CommonFunction;
+package Shopping_Mall.Admin;
 
-import java.awt.*;
 import java.util.Scanner;
-import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import Shopping_Mall.CommonFunction.ListProduct;
 import Shopping_Mall.CommonFunction.Product;
-
-
 
 public class AdminObject {
 

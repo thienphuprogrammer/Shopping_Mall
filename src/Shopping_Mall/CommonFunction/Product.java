@@ -79,6 +79,6 @@ public class Product implements Serializable {
         System.out.print(", Type: " + type);
         System.out.print(", Description: " + description);
         System.out.print(", price: " + price);
-        System.out.print(", Count: " + count);
+        System.out.println(", Count: " + count);
     }
 }

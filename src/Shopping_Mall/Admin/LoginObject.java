@@ -1,8 +1,4 @@
-package CommonFunction;
-
-import CommonFunction.AdminObject;
-
-import javax.swing.*;
+package Shopping_Mall.Admin;
 
 public class LoginObject {
 
