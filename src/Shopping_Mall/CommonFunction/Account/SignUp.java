@@ -1,4 +1,5 @@
 package Shopping_Mall.CommonFunction.Account;
+import Shopping_Mall.CommonFunction.Account.InfoUser;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ public class SignUp {
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
-//            this.info = getUserInformation();
-            this.info = new InfoUser("ThienPhu", "ThienPhu", "ThienPhu", "ThienPhu", "ThienPhu", "ThienPhu", 0);
+            this.info = getUserInformation();
+//            this.info = new InfoUser("ThienPhu1", "ThienPhu", "ThienPhu", "ThienPhu1", "ThienPhu", "ThienPhu", 0);
             if(!signUp("src/Data/user.bin")) {
                 System.out.println("Username hay là email đã được đăng kí trước đó.");
             }

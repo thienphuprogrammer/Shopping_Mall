@@ -15,6 +15,10 @@ public class AccountUser {
             System.out.println("----------------------------------------");
             System.out.print("Sự lựa chọn của bạn: ");
             choice = Integer.parseInt(scanner.nextLine());
+
+            if(choice == 0) {
+                return false;
+            }
             if (choice == 1) {
                 new SignUp().SignUp();
             }

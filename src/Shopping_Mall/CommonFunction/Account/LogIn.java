@@ -1,4 +1,5 @@
 package Shopping_Mall.CommonFunction.Account;
+import Shopping_Mall.CommonFunction.Account.InfoUser;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -42,6 +43,9 @@ public class LogIn {
                         return true;
                     }
                 }
+            }
+            else {
+                System.out.println("Lỗi, không có user nào tồn tại trong hệ thống");
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
