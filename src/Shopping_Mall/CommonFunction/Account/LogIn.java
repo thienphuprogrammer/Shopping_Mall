@@ -1,5 +1,4 @@
 package Shopping_Mall.CommonFunction.Account;
-import Shopping_Mall.CommonFunction.Account.InfoUser;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,12 +18,17 @@ public class LogIn {
             System.out.print("Nhập mật khẩu: ");
             info.password = scanner.nextLine();
 
-            if(logIn("src/Data/user.bin")) {
+            int status = logIn("src/Data/user.bin");
+            if(status == 1) {
                 return true;
             }
+            else if (status == -1){
+                return false;
+            }
+            System.out.println("Đăng nhập thất bại");
         }
     }
-    private boolean logIn(String filename) {
+    private int logIn(String filename) {
         try {
             ArrayList<InfoUser> listInfo;
             FileInputStream fis = new FileInputStream(filename);
@@ -38,19 +42,20 @@ public class LogIn {
 
                 for (InfoUser infoUser : listInfo) {
                     if(infoUser.username.equals(info.username)
-                            && infoUser.email.equals(info.email)){
+                            && infoUser.password.equals(info.password)){
                         System.out.println("Đăng nhập thành công");
-                        return true;
+                        return 1;
                     }
                 }
             }
             else {
                 System.out.println("Lỗi, không có user nào tồn tại trong hệ thống");
+                return -1;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return false;
+        return 0;
     }
 
 }
