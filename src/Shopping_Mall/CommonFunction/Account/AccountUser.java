@@ -3,7 +3,7 @@ package Shopping_Mall.CommonFunction.Account;
 import java.util.Scanner;
 
 public class AccountUser {
-    public static boolean AccountUser() {
+    public static int AccountUser() {
         int choice = -1;
 
         while(true) {
@@ -17,14 +17,15 @@ public class AccountUser {
             choice = Integer.parseInt(scanner.nextLine());
 
             if(choice == 0) {
-                return false;
+                return -1;
             }
             if (choice == 1) {
                 new SignUp().SignUp();
             }
             else if (choice == 2){
-                if(new LogIn().LogIn()) {
-                    return true;
+                int status = new LogIn().LogIn();
+                if(status != -1) {
+                    return status;
                 }
             }
         }

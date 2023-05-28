@@ -35,7 +35,7 @@ public class ListProduct {
     }
 
     public void searchProduct(String str) {
-        ListProduct newList = this;
+        ListProduct newList = new ListProduct();
 
         for (Product product : listProduct) {
             if (str.equals(String.valueOf(product.getId()))
@@ -53,7 +53,6 @@ public class ListProduct {
             }
         }
     }
-
     public void showListProduct() {
         for(Product product: listProduct) {
             product.showProduct();
@@ -63,9 +62,11 @@ public class ListProduct {
     public void loadListProduct(String filename) {
         try {
             FileInputStream fis = new FileInputStream(filename);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            listProduct = (ArrayList<Product>) ois.readObject();
-            ois.close();
+            if(fis.available() != 0) {
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                listProduct = (ArrayList<Product>) ois.readObject();
+                ois.close();
+            }
             fis.close();
         } catch (IOException e) {
             System.out.println("Lỗi khi đọc danh sách sản phẩm từ file.");

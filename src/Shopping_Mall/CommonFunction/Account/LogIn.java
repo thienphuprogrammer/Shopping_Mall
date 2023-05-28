@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class LogIn {
     private InfoUser info = new InfoUser();
 
-    public boolean LogIn() {
+    public int LogIn() {
         while(true) {
             Scanner scanner = new Scanner(System.in);
 
@@ -19,13 +19,16 @@ public class LogIn {
             info.password = scanner.nextLine();
 
             int status = logIn("src/Data/user.bin");
-            if(status == 1) {
-                return true;
+            if (status == -2){
+                return -1;
             }
-            else if (status == -1){
-                return false;
+            else if (status == -1) {
+                System.out.println("Đăng nhập thất bại");
+
             }
-            System.out.println("Đăng nhập thất bại");
+            else {
+                return status;
+            }
         }
     }
     private int logIn(String filename) {
@@ -44,18 +47,18 @@ public class LogIn {
                     if(infoUser.username.equals(info.username)
                             && infoUser.password.equals(info.password)){
                         System.out.println("Đăng nhập thành công");
-                        return 1;
+                        return infoUser.customerId;
                     }
                 }
             }
             else {
                 System.out.println("Lỗi, không có user nào tồn tại trong hệ thống");
-                return -1;
+                return -2;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return 0;
+        return -1;
     }
 
 }

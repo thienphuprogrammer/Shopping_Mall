@@ -3,7 +3,21 @@ package Shopping_Mall.UserObject;
 import Shopping_Mall.CommonFunction.ListProduct;
 import Shopping_Mall.CommonFunction.Product;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class ShoppingCart extends ListProduct {
+    private int idUser = -1;
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
     public void addItem(Product product) {
         boolean isFind = false;
         for (int i = 0; i < listProduct.size(); i++) {
@@ -29,5 +43,50 @@ public class ShoppingCart extends ListProduct {
 
     public void clearCart() {
         listProduct.clear();
+    }
+
+    public void loadListProduct(String filename) {
+        try {
+            HashMap<Integer, ArrayList<Product>> hashMap = new HashMap<>();
+            FileInputStream fis = new FileInputStream(filename);
+            if(fis.available() != 0) {
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                hashMap = (HashMap<Integer, ArrayList<Product>>) ois.readObject();
+                this.listProduct = hashMap.get(idUser);
+                ois.close();
+            }
+            fis.close();
+        } catch (IOException e) {
+            System.out.println("Lỗi khi đọc danh sách sản phẩm từ file.");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void saveListProduct(String filename) {
+        try {
+            HashMap<Integer, ArrayList<Product>> hashMap = new HashMap<>();
+            FileInputStream fis = new FileInputStream(filename);
+            if(fis.available() != 0) {
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                hashMap = (HashMap<Integer, ArrayList<Product>>) ois.readObject();
+                ois.close();
+            }
+            fis.close();
+            if(listProduct.size() > 0) {
+                hashMap.put(idUser, listProduct);
+                FileOutputStream fos = new FileOutputStream(filename);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(hashMap);
+                fos.close();
+                oos.close();
+            }
+        } catch (IOException e) {
+            System.out.println("Lỗi khi lưu danh sách sản phẩm vào file.");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

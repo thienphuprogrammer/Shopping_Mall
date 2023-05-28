@@ -9,9 +9,10 @@ public class User {
         MenuProductUSer listProduct = new MenuProductUSer();
         listProduct.loadListProduct("src/Data/product.bin");
 
-        boolean statusLogIn = AccountUser();
-        while(statusLogIn) {
-            break;
+//        int statusLogIn = AccountUser();
+        int statusLogIn = 0;
+        if (statusLogIn != -1) {
+            new MenuUser(statusLogIn);
         }
     }
 
