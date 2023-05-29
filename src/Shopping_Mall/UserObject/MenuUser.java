@@ -16,12 +16,12 @@ class FilterProduct extends ListProduct{
     private ListProduct newList = new ListProduct();
     FilterProduct(ListProduct listProduct1) {
         this.listProduct = listProduct1.getListProduct();
-        System.out.println("----------------------------------------");
-        System.out.println("Nhập 0 để trở về menu.");
-        System.out.println("Nhập 1 để lọc sản phẩm theo số lượng.");
-        System.out.println("Nhập 2 để lọc sản phẩm theo giá.");
-        System.out.println("Nhập 3 để lọc sản phẩm theo loại.");
-        System.out.println("----------------------------------------");
+        System.out.println("+----------------------------------------+");
+        System.out.println("|   Nhập 0 để trở về menu.               |");
+        System.out.println("|   Nhập 1 để lọc sản phẩm theo số lượng.|");
+        System.out.println("|   Nhập 2 để lọc sản phẩm theo giá.     |");
+        System.out.println("|   Nhập 3 để lọc sản phẩm theo loại.    |");
+        System.out.println("+----------------------------------------+");
         System.out.print("Sự lựa chọn của bạn: ");
         int choice = Integer.parseInt(scanner.nextLine());
         
@@ -241,7 +241,8 @@ public class MenuUser {
         CLEAR_CART,
         BUY_PRODUCT,
         VIEW_PRODUCT_BUYING,
-        HISTORY_BOUGHT
+        HISTORY_BOUGHT,
+        LOG_OUT()
     }
 
     private int idUser;
@@ -276,6 +277,8 @@ public class MenuUser {
                 buyProducts();
             } else if (choice == MENU_SHEET.HISTORY_BOUGHT.ordinal()) {
                 viewPurchaseHistory();
+            } else if (choice == MENU_SHEET.LOG_OUT.ordinal()) {
+
             } else {
                 System.out.println("Lựa chọn không hợp lệ.");
             }
@@ -341,6 +344,8 @@ public class MenuUser {
     }
 
     private void editInfoUser() {
+        accUser.showInfo();
+        System.out.println("+----------------------------------------+");
         new EditInfo(accUser, "src/Data/user.bin");
     }
 
@@ -403,11 +408,17 @@ public class MenuUser {
 
     private void buyProducts() {
         System.out.println("Mua hàng...");
-        // Code for buying products
-        for(Product product: listCart.getListProduct()) {
-            this.listProductBuying.addProduct(product);
+        System.out.print("Bạn có chắc là muốn mua hàng không (Y/N): ");
+        String question = scanner.nextLine();
+        if (question.equals('Y') || question.equals('y')) {
+            // Code for buying products
+            for(Product product: listCart.getListProduct()) {
+                this.listProductBuying.addProduct(product);
+            }
+            System.out.println("Đã mua hàng thành công!!!");
+        } else {
+            System.out.println("Đã hủy mua hàng!!!");
         }
-        System.out.println("Đã mua hàng thành công!!!");
     }
 
     private void viewPurchaseHistory() {
