@@ -1,9 +1,15 @@
 package Shopping_Mall.UserObject;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import Shopping_Mall.CommonFunction.Account.InfoUser;
+import Shopping_Mall.CommonFunction.Account.SignUp;
 import Shopping_Mall.CommonFunction.ListProduct;
 import Shopping_Mall.CommonFunction.Product;
 
-import java.util.Scanner;
+import static Shopping_Mall.CommonFunction.Account.SignUp.*;
 
 class FilterProduct extends ListProduct{
     private Scanner scanner = new Scanner(System.in);
@@ -67,6 +73,153 @@ class FilterProduct extends ListProduct{
     
 }
 
+class EditInfo extends SignUp {
+    private Scanner scanner = new Scanner(System.in);
+    private String filename;
+    private boolean isChangeUserName = false;
+    private boolean isChangeEmail = false;
+    EditInfo (InfoUser user, String file) {
+        this.info = user;
+        this.filename = file;
+        while (true) {
+            System.out.println("+----------------------------------------+");
+            System.out.println("|   Nhập 0 để trở về menu.               |");
+            System.out.println("|   Nhập 1 để thay đổi tên đăng nhập.    |");
+            System.out.println("|   Nhập 2 để thay đổi password.         |");
+            System.out.println("|   Nhập 3 để thay đổi số điện thoại.    |");
+            System.out.println("|   Nhập 4 để thay đổi email.            |");
+            System.out.println("|   Nhập 5 để thay dồi họ và tên.        |");
+            System.out.println("|   Nhập 6 để thay đổi CMND.             |");
+            System.out.println("+----------------------------------------+");
+            System.out.print("Sự lựa chọn của bạn: ");
+            int choice = Integer.parseInt(scanner.nextLine());
+            if (choice == 0) {
+                return;
+            } else if(choice == 1) {
+                //Function to edit user name
+                editUserName();
+            } else if(choice == 2) {
+                //Function to edit password
+                editPassword();
+            } else if (choice == 3) {
+                //Function to edit phone number
+                editPhoneNumber();
+            } else if (choice == 4) {
+                //Function to edit email
+                editEmail();
+            } else if (choice == 5) {
+                //Function to edit full name
+                editFullName();
+            } else if (choice == 6) {
+                //Function to edit identity Number
+                editIdentityNumber();
+            } else {
+                System.out.println("Lựa chọn không hợp lệ.");
+            }
+            if (checkExistUser()) {
+                System.out.println("Đổi thông tin tài khoảng thành công !!");
+                return;
+            }
+            else {
+                System.out.println("Thông tin không hợp lệ!!");
+                isChangeUserName = false;
+                isChangeEmail = false;
+            }
+        }
+
+    }
+
+    private boolean checkExistUser() {
+        try {
+            ArrayList<InfoUser> listInfo = new ArrayList<InfoUser>();
+
+            File file = new File(filename);
+            if (file.exists()) {
+                FileInputStream fis = new FileInputStream(file);
+                if(fis.available() != 0) {
+                    ObjectInputStream ois = new ObjectInputStream(fis);
+
+                    listInfo = (ArrayList<InfoUser>) ois.readObject();
+                    ois.close();
+                }
+            }
+
+            for (InfoUser infoUser : listInfo) {
+                if ((infoUser.getUsername().equals(info.getUsername()) && isChangeUserName)
+                        || (infoUser.getEmail().equals(info.getEmail()) && isChangeEmail)) {
+                    return false;
+                }
+            }
+            listInfo.set(info.getCustomerId(), info);
+
+            FileOutputStream fos = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(listInfo);
+            oos.close();
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+    private void editUserName() {
+        System.out.print("Tên đăng nhập: ");
+        String username = scanner.nextLine();
+        info.setUsername(username);
+        isChangeUserName = true;
+    }
+    private void editPassword() {
+        String password = "";
+        while(true) {
+            System.out.print("Mật khẩu: ");
+            password = scanner.nextLine();
+
+            if(isValidPassword(password)) {
+                break;
+            }
+            System.out.println("Mật khẩu phải có ít nhất 8 kí tự.");
+        }
+        info.setPassword(password);
+    }
+    private void editPhoneNumber() {
+        String phoneNumber = "";
+        while (true) {
+            System.out.print("Số điện thoại: ");
+            phoneNumber = scanner.nextLine();
+            if (isValidPhoneNumber(phoneNumber)) {
+                break;
+            }
+            System.out.println("Số điện thoại không hợp lệ.");
+        }
+        info.setPhoneNumber(phoneNumber);
+    }
+    private void editEmail() {
+        String email = "";
+        while(true) {
+            System.out.print("Email: ");
+            email = scanner.nextLine();
+            if(isValidEmail(email)) {
+                break;
+            }
+            System.out.println("Email không hợp lệ.");
+        }
+        info.setEmail(email);
+        isChangeEmail = true;
+    }
+    private void editFullName() {
+        System.out.print("Họ và tên: ");
+        String fullName = scanner.nextLine();
+        info.setFullName(fullName);
+    }
+    private void editIdentityNumber() {
+        System.out.print("Số CMND: ");
+        String identityNumber = scanner.nextLine();
+        info.setIdentityNumber(identityNumber);
+    }
+}
 public class MenuUser {
     private Scanner scanner = new Scanner(System.in);
 
@@ -74,8 +227,12 @@ public class MenuUser {
     private ShoppingCart listCart = new ShoppingCart();
     private ShoppingCart listBoughtHistory = new ShoppingCart();
     private ShoppingCart listProductBuying = new ShoppingCart();
+    private InfoUser accUser;
+
     private enum MENU_SHEET {
         EXIST,
+        VIEW_INFO_ACC,
+        EDIT_INFO_ACC,
         VIEW_PRODUCT,
         SEARCH_PRODUCT,
         FILTER_PRODUCT,
@@ -88,12 +245,17 @@ public class MenuUser {
     }
 
     private int idUser;
-    MenuUser(int id) {
+    MenuUser(InfoUser accuser) {
         initData();
-        this.idUser = id;
+        this.accUser = accuser;
+        this.idUser = accuser.getCustomerId();
         while(true) {
             int choice = getUserChoice();
-            if(choice == MENU_SHEET.VIEW_PRODUCT_BUYING.ordinal()) {
+            if (choice == MENU_SHEET.EDIT_INFO_ACC.ordinal()) {
+                editInfoUser();
+            } else if(choice == MENU_SHEET.VIEW_INFO_ACC.ordinal()) {
+                viewInfoAcc();
+            } else if(choice == MENU_SHEET.VIEW_PRODUCT_BUYING.ordinal()) {
                 viewListBuying();
             } else if (choice == MENU_SHEET.EXIST.ordinal()) {
                 returnToHomePage();
@@ -140,17 +302,20 @@ public class MenuUser {
     }
 
     public int getUserChoice() {
-        System.out.println("Nhập " + MENU_SHEET.EXIST.ordinal() + " để quay trở về trang chủ.");
-        System.out.println("Nhập " + MENU_SHEET.VIEW_PRODUCT.ordinal() + " xem hàng hóa.");
-        System.out.println("Nhập " + MENU_SHEET.SEARCH_PRODUCT.ordinal() + " tìm kiếm sản phẩm.");
-        System.out.println("Nhập " + MENU_SHEET.FILTER_PRODUCT.ordinal() + " lọc sản phẩm.");
-        System.out.println("Nhập " + MENU_SHEET.ADD_TO_CART.ordinal() + " thêm hàng vào giỏ.");
-        System.out.println("Nhập " + MENU_SHEET.VIEW_CART.ordinal() + " xem giỏ hàng.");
-        System.out.println("Nhập " + MENU_SHEET.CLEAR_CART.ordinal() + " làm mới giỏ hàng.");
-        System.out.println("Nhập " + MENU_SHEET.BUY_PRODUCT.ordinal() + " mua hàng.");
-        System.out.println("Nhập " + MENU_SHEET.VIEW_PRODUCT_BUYING.ordinal() + " xem hàng đang mua.");
-        System.out.println("Nhập " + MENU_SHEET.HISTORY_BOUGHT.ordinal() + " xem lịch sử mua hàng.");
-        System.out.println("----------------------------------------");
+        System.out.println("+------------------------------------------------------+");
+        System.out.println("|    Nhập " + MENU_SHEET.EXIST.ordinal() +               " để quay trở về trang chủ.                  |");
+        System.out.println("|    Nhập " + MENU_SHEET.VIEW_INFO_ACC.ordinal() +       " để xem thông tin tài khoản.                |");
+        System.out.println("|    Nhập " + MENU_SHEET.EDIT_INFO_ACC.ordinal() +       " để xem chỉnh sửa thông tin tài khoản.      |");
+        System.out.println("|    Nhập " + MENU_SHEET.VIEW_PRODUCT.ordinal() +        " xem hàng hóa.                              |");
+        System.out.println("|    Nhập " + MENU_SHEET.SEARCH_PRODUCT.ordinal() +      " tìm kiếm sản phẩm.                         |");
+        System.out.println("|    Nhập " + MENU_SHEET.FILTER_PRODUCT.ordinal() +      " lọc sản phẩm.                              |");
+        System.out.println("|    Nhập " + MENU_SHEET.ADD_TO_CART.ordinal() +         " thêm hàng vào giỏ.                         |");
+        System.out.println("|    Nhập " + MENU_SHEET.VIEW_CART.ordinal() +           " xem giỏ hàng.                              |");
+        System.out.println("|    Nhập " + MENU_SHEET.CLEAR_CART.ordinal() +          " làm mới giỏ hàng.                          |");
+        System.out.println("|    Nhập " + MENU_SHEET.BUY_PRODUCT.ordinal() +         " mua hàng.                                  |");
+        System.out.println("|    Nhập " + MENU_SHEET.VIEW_PRODUCT_BUYING.ordinal() + " xem hàng đang mua.                        |");
+        System.out.println("|    Nhập " + MENU_SHEET.HISTORY_BOUGHT.ordinal() +      " xem lịch sử mua hàng.                     |");
+        System.out.println("+------------------------------------------------------+");
         System.out.print("Sự lựa chọn của bạn: ");
         int choice = Integer.parseInt(scanner.nextLine());
 
@@ -159,7 +324,7 @@ public class MenuUser {
 
     private void waitForInput() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("----------------------------------------");
+        System.out.println("+------------------------------------------------------+");
         System.out.println("Nhấn phím bất kỳ để trở về menu.");
         scanner.nextLine(); // Wait for user to press Enter
         for(int i = 0; i < 100; i++) System.out.println("");
@@ -169,6 +334,14 @@ public class MenuUser {
     private void returnToHomePage() {
         System.out.println("Quay trở về trang chủ...");
         // Code for returning to the home page
+    }
+
+    private void viewInfoAcc() {
+        accUser.showInfo();
+    }
+
+    private void editInfoUser() {
+        new EditInfo(accUser, "src/Data/user.bin");
     }
 
     private void viewProducts() {

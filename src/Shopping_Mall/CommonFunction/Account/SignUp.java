@@ -1,5 +1,4 @@
 package Shopping_Mall.CommonFunction.Account;
-import Shopping_Mall.CommonFunction.Account.InfoUser;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -8,25 +7,31 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignUp {
-    private InfoUser info = new InfoUser();
+    protected InfoUser info = new InfoUser();
+
+    public InfoUser getInfo() {
+        return info;
+    }
+
+    public void setInfo(InfoUser info) {
+        this.info = info;
+    }
 
     public boolean SignUp() {
         Scanner scanner = new Scanner(System.in);
-
-        while(true) {
-            this.info = getUserInformation();
+        this.info = getUserInformation();
 //            this.info = new InfoUser("ThienPhu1", "ThienPhu", "ThienPhu", "ThienPhu1", "ThienPhu", "ThienPhu", 0);
-            if(!signUp("src/Data/user.bin")) {
-                System.out.println("Username hay là email đã được đăng kí trước đó.");
-            }
-            else {
-                System.out.println("Đăng kí thành công!!!");
-                return true;
-            }
+        if(!signUp("src/Data/user.bin")) {
+            System.out.println("Username hay là email đã được đăng kí trước đó.");
         }
+        else {
+            System.out.println("Đăng kí thành công!!!");
+            return true;
+        }
+        return false;
     }
 
-    private boolean signUp(String filename) {
+    public boolean signUp(String filename) {
         try {
             ArrayList<InfoUser> listInfo = new ArrayList<InfoUser>();
 
@@ -42,11 +47,11 @@ public class SignUp {
             }
 
             for (InfoUser infoUser : listInfo) {
-                if (infoUser.username.equals(info.username) || infoUser.email.equals(info.email)) {
+                if (infoUser.getUsername().equals(info.getUsername()) || infoUser.getEmail().equals(info.getEmail())) {
                     return false;
                 }
             }
-
+            info.setCustomerId(listInfo.size() - 1);
             listInfo.add(info);
 
             FileOutputStream fos = new FileOutputStream(file);
@@ -63,21 +68,19 @@ public class SignUp {
         return false;
     }
 
-    private InfoUser getUserInformation() {
+    public InfoUser getUserInformation() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Tên đăng nhập: ");
         String username = scanner.nextLine();
 
         String password = "";
-        while(true) {
-            System.out.print("Mật khẩu: ");
-            password = scanner.nextLine();
+        System.out.print("Mật khẩu: ");
+        password = scanner.nextLine();
 
-            if(isValidPassword(password)) {
-                break;
-            }
+        if(!isValidPassword(password)) {
             System.out.println("Mật khẩu phải có ít nhất 8 kí tự.");
+            return null;
         }
 
         String phoneNumber = "";
@@ -112,7 +115,7 @@ public class SignUp {
         return new InfoUser(username, password, phoneNumber, email, fullName, identityNumber, customerId);
     }
 
-    private boolean isValidEmail(String email) {
+    public boolean isValidEmail(String email) {
         // Biểu thức chính quy để kiểm tra cú pháp email
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
@@ -122,7 +125,7 @@ public class SignUp {
         return matcher.matches();
     }
 
-    private boolean isValidPhoneNumber(String phoneNumber) {
+    public boolean isValidPhoneNumber(String phoneNumber) {
         // Biểu thức chính quy để kiểm tra cú pháp số điện thoại
         String phoneRegex = "^\\d{10}$"; // Định dạng 10 chữ số
 
@@ -132,8 +135,7 @@ public class SignUp {
         return matcher.matches();
     }
 
-    private boolean isValidPassword(String password) {
+    public boolean isValidPassword(String password) {
         return password.length() >= 8;
     }
-
 }

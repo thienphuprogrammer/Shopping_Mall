@@ -1,4 +1,6 @@
 package Shopping_Mall.UserObject;
+import Shopping_Mall.CommonFunction.Account.InfoUser;
+
 import java.util.ArrayList;
 
 import static Shopping_Mall.CommonFunction.Account.AccountUser.AccountUser;
@@ -9,9 +11,9 @@ public class User {
         MenuProductUSer listProduct = new MenuProductUSer();
         listProduct.loadListProduct("src/Data/product.bin");
 
-//        int statusLogIn = AccountUser();
-        int statusLogIn = 0;
-        if (statusLogIn != -1) {
+        InfoUser statusLogIn = AccountUser();
+//        int statusLogIn = 0;
+        if (statusLogIn != null) {
             new MenuUser(statusLogIn);
         }
     }
