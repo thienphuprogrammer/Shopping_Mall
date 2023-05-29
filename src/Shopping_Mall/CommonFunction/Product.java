@@ -74,11 +74,21 @@ public class Product implements Serializable {
     }
 
     public void showProduct() {
-        System.out.print("Name: " + name);
-        System.out.print(", id: " + id);
-        System.out.print(", Type: " + type);
-        System.out.print(", Description: " + description);
-        System.out.print(", price: " + price);
-        System.out.println(", Count: " + count);
+        System.out.println("+----------------------------------------+");
+        System.out.println("| Name        | " + name + " ".repeat(25 - String.valueOf(name).length()) + "|");
+        System.out.println("| id          | " + id + " ".repeat(25 - String.valueOf(id).length()) + "|");
+        System.out.println("| Type        | " + type + " ".repeat(25 - type.length()) + "|");
+        System.out.println("| Price       | " + price + " ".repeat(25 - String.valueOf(price).length()) + "|");
+        System.out.println("| Count       | " + count + " ".repeat(25 - String.valueOf(count).length()) + "|");
+
+        // Xử lý mô tả nếu vượt quá kích thước cột
+        if (description.length() > 25) {
+            String truncatedDescription = description.substring(0, 22) + "...";
+            System.out.println("| Description | " + truncatedDescription + " ".repeat(25 - truncatedDescription.length()) + "|");
+        } else {
+            System.out.println("| Description | " + description + " ".repeat(25 - description.length()) + "|");
+        }
+
+        System.out.println("+----------------------------------------+\n");
     }
 }

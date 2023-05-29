@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
 public class ListProduct {
     protected ArrayList<Product> listProduct = new ArrayList<Product>();
     public ArrayList<Product> getListProduct() {
@@ -29,7 +30,10 @@ public class ListProduct {
 
             if(product.getId() == idProduct) {
                 iterator.remove();
+                System.out.println("Sản phẩm có ID " + idProduct + " đã được xóa.\n");
                 break;
+            } else {
+                System.out.println("Xóa thất bại\n");
             }
         }
     }
@@ -54,11 +58,22 @@ public class ListProduct {
         }
     }
 
-    public void showListProduct() {
-        for(Product product: listProduct) {
-            product.showProduct();
+    public void showListProduct(int ID) {
+        boolean found = false;
+
+        for (Product product : listProduct) {
+            if (product.getId() == ID) {
+                product.showProduct();
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Không tìm thấy sản phẩm với ID đã nhập.\n");
         }
     }
+
 
     public void loadListProduct(String filename) {
         try {
