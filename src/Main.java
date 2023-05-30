@@ -1,3 +1,4 @@
+import Shopping_Mall.Admin.AdminObject;
 import Shopping_Mall.CommonFunction.ListProduct;
 import Shopping_Mall.CommonFunction.Product;
 import Shopping_Mall.UserObject.User;
@@ -21,7 +22,7 @@ public class Main {
                 break;
             }
             else if (choice == 1) {
-
+                AdminObject.ShowAdminMenu();
             }
             else if(choice == 2) {
                 new User();
