@@ -1,4 +1,4 @@
-package Shopping_Mall.CommonFunction.Account;
+package shoppingmall.Account;
 
 import java.util.Scanner;
 

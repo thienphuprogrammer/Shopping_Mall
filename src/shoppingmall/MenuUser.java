@@ -1,20 +1,19 @@
-package Shopping_Mall.UserObject;
+package shoppingmall;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import Shopping_Mall.CommonFunction.Account.InfoUser;
-import Shopping_Mall.CommonFunction.Account.SignUp;
-import Shopping_Mall.CommonFunction.ListProduct;
-import Shopping_Mall.CommonFunction.Product;
+import shoppingmall.Account.SignUp;
+import shoppingmall.services.ProductService;
+import shoppingmall.models.Product;
 
-import static Shopping_Mall.CommonFunction.Account.SignUp.*;
+import static shoppingmall.utils.ValidationUtil.*;
 
-class FilterProduct extends ListProduct{
+class FilterProduct extends ProductService {
     private Scanner scanner = new Scanner(System.in);
-    private ListProduct newList = new ListProduct();
-    FilterProduct(ListProduct listProduct1) {
+    private ProductService newList = new ProductService();
+    FilterProduct(ProductService listProduct1) {
         this.listProduct = listProduct1.getListProduct();
         System.out.println("+----------------------------------------+");
         System.out.println("|   Nhập 0 để trở về menu.               |");
@@ -223,13 +222,70 @@ class EditInfo extends SignUp {
 public class MenuUser {
     private Scanner scanner = new Scanner(System.in);
 
-    private ListProduct listProduct = new ListProduct();
+    private ProductService listProduct = new ProductService();
     private ShoppingCart listCart = new ShoppingCart();
     private ShoppingCart listBoughtHistory = new ShoppingCart();
     private ShoppingCart listProductBuying = new ShoppingCart();
     private InfoUser accUser;
 
-    private enum MENU_SHEET {
+
+    public ProductService getListProduct() {
+        return listProduct;
+    }
+
+    public void setListProduct(ProductService listProduct) {
+        this.listProduct = listProduct;
+    }
+
+    public ShoppingCart getListCart() {
+        return listCart;
+    }
+
+    public void setListCart(ShoppingCart listCart) {
+        this.listCart = listCart;
+    }
+
+    public ShoppingCart getListBoughtHistory() {
+        return listBoughtHistory;
+    }
+
+    public void setListBoughtHistory(ShoppingCart listBoughtHistory) {
+        this.listBoughtHistory = listBoughtHistory;
+    }
+
+    public ShoppingCart getListProductBuying() {
+        return listProductBuying;
+    }
+
+    public void setListProductBuying(ShoppingCart listProductBuying) {
+        this.listProductBuying = listProductBuying;
+    }
+
+    public InfoUser getAccUser() {
+        return accUser;
+    }
+
+    public void setAccUser(InfoUser accUser) {
+        this.accUser = accUser;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    public enum MENU_SHEET {
         EXIST,
         VIEW_INFO_ACC,
         EDIT_INFO_ACC,
@@ -248,42 +304,7 @@ public class MenuUser {
     private int idUser;
     MenuUser(InfoUser accuser) {
         initData();
-        this.accUser = accuser;
-        this.idUser = accuser.getCustomerId();
-        while(true) {
-            int choice = getUserChoice();
-            if (choice == MENU_SHEET.EDIT_INFO_ACC.ordinal()) {
-                editInfoUser();
-            } else if(choice == MENU_SHEET.VIEW_INFO_ACC.ordinal()) {
-                viewInfoAcc();
-            } else if(choice == MENU_SHEET.VIEW_PRODUCT_BUYING.ordinal()) {
-                viewListBuying();
-            } else if (choice == MENU_SHEET.EXIST.ordinal()) {
-                returnToHomePage();
-                break;
-            } else if (choice == MENU_SHEET.CLEAR_CART.ordinal()) {
-                clearCart();
-            } else if (choice == MENU_SHEET.VIEW_PRODUCT.ordinal()) {
-                viewProducts();
-            } else if (choice == MENU_SHEET.SEARCH_PRODUCT.ordinal()) {
-                searchProducts();
-            } else if (choice == MENU_SHEET.FILTER_PRODUCT.ordinal()) {
-                filterProducts();
-            } else if (choice == MENU_SHEET.ADD_TO_CART.ordinal()) {
-                addToCart();
-            } else if (choice == MENU_SHEET.VIEW_CART.ordinal()) {
-                viewCart();
-            } else if (choice == MENU_SHEET.BUY_PRODUCT.ordinal()) {
-                buyProducts();
-            } else if (choice == MENU_SHEET.HISTORY_BOUGHT.ordinal()) {
-                viewPurchaseHistory();
-            } else if (choice == MENU_SHEET.LOG_OUT.ordinal()) {
 
-            } else {
-                System.out.println("Lựa chọn không hợp lệ.");
-            }
-            waitForInput();
-        }
         saveData();
     }
 
@@ -305,7 +326,7 @@ public class MenuUser {
     }
 
     public int getUserChoice() {
-        System.out.println("+------------------------------------------------------+");
+        System.out.println("+------------------------MENU--------------------------+");
         System.out.println("|    Nhập " + MENU_SHEET.EXIST.ordinal() +               " để quay trở về trang chủ.                  |");
         System.out.println("|    Nhập " + MENU_SHEET.VIEW_INFO_ACC.ordinal() +       " để xem thông tin tài khoản.                |");
         System.out.println("|    Nhập " + MENU_SHEET.EDIT_INFO_ACC.ordinal() +       " để xem chỉnh sửa thông tin tài khoản.      |");
@@ -325,7 +346,7 @@ public class MenuUser {
         return choice;
     }
 
-    private void waitForInput() {
+    public void waitForInput() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("+------------------------------------------------------+");
         System.out.println("Nhấn phím bất kỳ để trở về menu.");
@@ -334,28 +355,28 @@ public class MenuUser {
 
     }
 
-    private void returnToHomePage() {
+    public void returnToHomePage() {
         System.out.println("Quay trở về trang chủ...");
         // Code for returning to the home page
     }
 
-    private void viewInfoAcc() {
-        accUser.showInfo();
+    public void viewInfoAcc() {
+        accUser.showInfo(accUser.getCustomerId());
     }
 
-    private void editInfoUser() {
-        accUser.showInfo();
+    public void editInfoUser() {
+        accUser.showInfo(accUser.getCustomerId());
         System.out.println("+----------------------------------------+");
         new EditInfo(accUser, "src/Data/user.bin");
     }
 
-    private void viewProducts() {
+    public void viewProducts() {
         System.out.println("Xem hàng hóa...");
         // Code for viewing products
         listProduct.showListProduct();
     }
 
-    private void searchProducts() {
+    public void searchProducts() {
         System.out.println("Tìm kiếm sản phẩm...");
         // Code for searching products
         System.out.print("Tên hoặc id sản phẩm muốn tiềm kiếm: ");
@@ -363,65 +384,73 @@ public class MenuUser {
         listProduct.searchProduct(str);
     }
 
-    private void filterProducts() {
+    public void filterProducts() {
         System.out.println("Lọc sản phẩm...");
         // Code for filtering products
         new FilterProduct(listProduct);
     }
 
-    private void addToCart() {
+    public void addToCart() {
         System.out.println("Thêm hàng vào giỏ...");
         // Code for adding items to cart
         System.out.print("Nhập vào id của sản phẩm: ");
         int id = Integer.parseInt(scanner.nextLine());
         for(Product product: listProduct.getListProduct()) {
-            if(product.getId() == id) {
-                product.setCount(1);
-                listCart.addItem(product);
+            if (product.getCount() > 0) {
+                if(product.getId() == id) {
+                    product.setCount(1);
+                    listCart.addItem(product);
+                    System.out.println("Đã thêm vào giỏ hàng. ");
+                    break;
+                }
+            }
+            else {
+                System.out.println("Sản phẩm đã hết hàng!!!");
                 break;
             }
+
         }
-        System.out.println("Đã thêm vào giỏ hàng. ");
     }
 
-    private void viewCart() {
+    public void viewCart() {
         System.out.println("Xem giỏ hàng...");
         // Code for viewing the cart
         listCart.showListProduct();
         float sumPrice = 0;
         for(Product product : listCart.getListProduct()) {
-            sumPrice += product.getPrice();
+            sumPrice += product.getPrice() * product.getCount();
         }
         System.out.println("Tổng giá tiền của hóa đơn là: " + sumPrice);
     }
 
-    private void clearCart() {
+    public void clearCart() {
         System.out.println("Xóa giỏ hàng...");
         listCart.clearCart();
         System.out.println("Giỏ hàng đã được làm mới!!");
     }
 
-    private void viewListBuying() {
+    public void viewListBuying() {
         System.out.println("Xem danh sách hàng đang mua...");
         listProductBuying.showListProduct();
     }
 
-    private void buyProducts() {
+    public void buyProducts() {
         System.out.println("Mua hàng...");
         System.out.print("Bạn có chắc là muốn mua hàng không (Y/N): ");
         String question = scanner.nextLine();
-        if (question.equals('Y') || question.equals('y')) {
+        if (question.equals("Y") || question.equals("y")) {
             // Code for buying products
             for(Product product: listCart.getListProduct()) {
                 this.listProductBuying.addProduct(product);
             }
+            this.listCart.clearCart();
             System.out.println("Đã mua hàng thành công!!!");
         } else {
             System.out.println("Đã hủy mua hàng!!!");
         }
     }
 
-    private void viewPurchaseHistory() {
+    public void viewPurchaseHistory() {
         System.out.println("Xem lịch sử mua hàng...");
         listBoughtHistory.showListProduct();
     }

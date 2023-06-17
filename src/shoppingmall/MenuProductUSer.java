@@ -1,12 +1,12 @@
-package Shopping_Mall.UserObject;
+package shoppingmall;
 
-import Shopping_Mall.CommonFunction.ListProduct;
-import Shopping_Mall.CommonFunction.Product;
+import shoppingmall.services.ProductService;
+import shoppingmall.models.Product;
 
-public class MenuProductUSer extends ListProduct {
+public class MenuProductUSer extends ProductService {
     //function is used to filter product that base on type of product
     public void filterProducṭ(String type) {
-        ListProduct newList = this;
+        ProductService newList = this;
 
         for (Product product : listProduct) {
             if (product.getType().equals(type)) {

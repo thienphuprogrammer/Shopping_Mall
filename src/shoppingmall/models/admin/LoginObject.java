@@ -1,4 +1,4 @@
-package Shopping_Mall.Admin;
+package shoppingmall.models.admin;
 
 public class LoginObject {
 
@@ -7,7 +7,7 @@ public class LoginObject {
         while (true) {
             // Tài khoản Admin
             if (Username.equals("Admin") && Password == 123456789) {
-                AdminObject.ShowAdminMenu();
+                new AdminObject();
              // tài khoản User
             } else if (Username.equals("User") && Password == 987654321) {
                 System.out.println("None function");// thay thế ở đây

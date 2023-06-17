@@ -1,13 +1,13 @@
-package Shopping_Mall.UserObject;
+package shoppingmall;
 
-import Shopping_Mall.CommonFunction.ListProduct;
-import Shopping_Mall.CommonFunction.Product;
+import shoppingmall.services.ProductService;
+import shoppingmall.models.Product;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ShoppingCart extends ListProduct {
+public class ShoppingCart extends ProductService {
     private int idUser = -1;
 
     public int getIdUser() {

@@ -1,10 +1,10 @@
-package Shopping_Mall.CommonFunction.Account;
+package shoppingmall.Account;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static shoppingmall.utils.ValidationUtil.*;
 
 public class SignUp {
     protected InfoUser info = new InfoUser();
@@ -75,13 +75,17 @@ public class SignUp {
         String username = scanner.nextLine();
 
         String password = "";
-        System.out.print("Mật khẩu: ");
-        password = scanner.nextLine();
+        while (true) {
+            System.out.print("Mật khẩu: ");
+            password = scanner.nextLine();
 
-        if(!isValidPassword(password)) {
+            if(isValidPassword(password)) {
+                break;
+            }
             System.out.println("Mật khẩu phải có ít nhất 8 kí tự.");
-            return null;
+
         }
+
 
         String phoneNumber = "";
         while (true) {
@@ -113,29 +117,5 @@ public class SignUp {
         int customerId = 0;
 
         return new InfoUser(username, password, phoneNumber, email, fullName, identityNumber, customerId);
-    }
-
-    public boolean isValidEmail(String email) {
-        // Biểu thức chính quy để kiểm tra cú pháp email
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-
-        return matcher.matches();
-    }
-
-    public boolean isValidPhoneNumber(String phoneNumber) {
-        // Biểu thức chính quy để kiểm tra cú pháp số điện thoại
-        String phoneRegex = "^\\d{10}$"; // Định dạng 10 chữ số
-
-        Pattern pattern = Pattern.compile(phoneRegex);
-        Matcher matcher = pattern.matcher(phoneNumber);
-
-        return matcher.matches();
-    }
-
-    public boolean isValidPassword(String password) {
-        return password.length() >= 8;
     }
 }

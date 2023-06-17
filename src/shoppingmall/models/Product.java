@@ -1,4 +1,4 @@
-package Shopping_Mall.CommonFunction;
+package shoppingmall.models;
 
 import java.io.Serializable;
 
@@ -10,19 +10,20 @@ public class Product implements Serializable {
     private int id;
     private float price;
     private int count;
-
+    private float rate;
     public Product() {
         // Default constructor with default values
-        this("", "", "", 0, 0.0f, 0);
+        this("", "", "", 0, 0.0f, 0, 0);
     }
 
-    public Product(String name, String type, String description, int id, float price, int count) {
+    public Product(String name, String type, String description, int id, float price, int count, int rate) {
         this.name = name;
         this.type = type;
         this.description = description;
         this.id = id;
         this.price = price;
         this.count = count;
+        this.rate = rate;
     }
 
     public String getName() {
@@ -74,21 +75,18 @@ public class Product implements Serializable {
     }
 
     public void showProduct() {
-        System.out.println("+----------------------------------------+");
-        System.out.println("| Name        | " + name + " ".repeat(25 - String.valueOf(name).length()) + "|");
-        System.out.println("| id          | " + id + " ".repeat(25 - String.valueOf(id).length()) + "|");
-        System.out.println("| Type        | " + type + " ".repeat(25 - type.length()) + "|");
-        System.out.println("| Price       | " + price + " ".repeat(25 - String.valueOf(price).length()) + "|");
-        System.out.println("| Count       | " + count + " ".repeat(25 - String.valueOf(count).length()) + "|");
+        System.out.print("| Name : " + name + " ".repeat(25 - String.valueOf(name).length()) + "|");
+        System.out.print(" id : " + id + " ".repeat(25 - String.valueOf(id).length()) + "|");
+        System.out.print(" Type : " + type + " ".repeat(25 - type.length()) + "|");
+        System.out.print(" Price : " + price + " ".repeat(25 - String.valueOf(price).length()) + "|");
+        System.out.print(" Count : " + count + " ".repeat(25 - String.valueOf(count).length()) + "|");
 
         // Xử lý mô tả nếu vượt quá kích thước cột
         if (description.length() > 25) {
             String truncatedDescription = description.substring(0, 22) + "...";
-            System.out.println("| Description | " + truncatedDescription + " ".repeat(25 - truncatedDescription.length()) + "|");
+            System.out.println(" Description : " + truncatedDescription + " ".repeat(25 - truncatedDescription.length()) + "|");
         } else {
-            System.out.println("| Description | " + description + " ".repeat(25 - description.length()) + "|");
+            System.out.println(" Description : " + description + " ".repeat(25 - description.length()) + "|");
         }
-
-        System.out.println("+----------------------------------------+\n");
     }
 }
