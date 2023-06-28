@@ -11,7 +11,9 @@ import static shoppingmall.utils.InputUtil.*;
 import static shoppingmall.utils.ValidationUtil.*;
 
 public class CustomerService {
-    Customer customer = new Customer();
+    private Customer customer;
+    private ArrayList<Customer> listCustomer;
+
     private String filename;
     private boolean isChangeUserName;
     private boolean isChangeEmail;
@@ -23,6 +25,10 @@ public class CustomerService {
     CustomerService (Customer user, String file) {
         this.customer = user;
         this.filename = file;
+        Object object = loadFileObject(filename);
+        if (object != null) {
+            this.listCustomer = (ArrayList<Customer>) object;
+        }
     }
 
     void menu() {
@@ -74,96 +80,118 @@ public class CustomerService {
     public boolean checkExistUser() {
         return false;
     }
-    public void editUserName() {
+    public boolean editUserName() {
         String username = readString("Tên đăng nhập: ");
-        if(isValidUserName(username)) {
+        if(isValidUserName(username) && findAccount(username) == null) {
             this.customer.setUsername(username);
-            isChangeUserName = true;
+            return true;
         }
         else {
             System.out.println("Tên đăng nhập phải có chiều dài lớn hơn 5 và ít hơn 20 kí tự");
         }
+        return false;
     }
-    public void editPassword() {
+    public boolean editPassword() {
         String password = "";
         password = readString("Mật khẩu: ");
 
         if(isValidPassword(password)) {
             this.customer.setPassword(password);
-            isChangeUserName = true;
+            return true;
         }
         else {
             System.out.println("Mật khẩu phải có ít nhất 8 kí tự.");
         }
-
+        return false;
     }
-    public void editPhoneNumber() {
+    public boolean editPhoneNumber() {
         String phoneNumber = "";
             phoneNumber = readString("Số điện thoại: ");
             if (isValidPhoneNumber(phoneNumber)) {
                 this.customer.setPhoneNumber(phoneNumber);
+                return true;
             }
-            else{
+            else {
                 System.out.println("Số điện thoại không hợp lệ.");
             }
+            return false;
     }
-    public void editEmail() {
+    public boolean editEmail() {
         String email = readString("Email: ");
-            if(isValidEmail(email)) {
+            if(isValidEmail(email)  && findAccount(email) == null) {
                 this.customer.setEmail(email);
-                this.isChangeEmail = true;
+                return true;
             }
             else {
                 System.out.println("Email không hợp lệ.");
             }
+            return false;
     }
-    private void editFullName() {
+    public boolean editFullName() {
         String fullName = readString("Họ và tên: ");
         if (isValidFullName(fullName)) {
             this.customer.setFullName(fullName);
-            this.isChangeFullName = true;
+            return true;
+        } else {
+            System.out.println("Họ và tên không hợp lệ.");
         }
+        return false;
     }
-    private void editIdentityNumber() {
+    public boolean editIdentityNumber() {
         String identityNumber = readString("Số CMND: ");
         if(isValidIdentityNumber(identityNumber)) {
             this.customer.setIdentityNumber(identityNumber);
-            this.isChangePhoneNumber = true;
+            return true;
         }
         else {
             System.out.println("SDT không hợp lệ.");
         }
+        return false;
     }
-
-    public Customer findAccount(String str) {
-        ArrayList<Customer> listCustomer;
-        Object object = loadFileObject(filename);
-        if (object != null) {
-            listCustomer = (ArrayList<Customer>) object;
-            for (Customer customer1: listCustomer) {
-                if(str.equals(customer1.getUsername())
-                        ||  str.equals(customer1.getEmail())) {
-                    return customer1;
-                }
+    public Customer findAccount(String str ) { //str is user name or email
+        for (Customer customer1: listCustomer) {
+            if(str.equals(customer1.getUsername())
+                    ||  str.equals(customer1.getEmail())) {
+                return customer1;
             }
         }
         return null;
     }
-
-    public Customer checkAccountExit(String str, String pass) {
-        ArrayList<Customer> listCustomer;
-        Object object = loadFileObject(filename);
-        if (object != null) {
-            listCustomer = (ArrayList<Customer>) object;
-            for (Customer customer1: listCustomer) {
-                if((str.equals(customer1.getUsername())
-                        ||  str.equals(customer1.getEmail()))
-                        && pass.equals(customer1.getPassword())) {
-                    return customer1;
-                }
+    public Customer findAccount(int ID) {
+        for (Customer customer1: listCustomer) {
+            if(ID == customer1.getCustomerId()) {
+                return customer1;
             }
         }
         return null;
     }
-    public boolean()
+    public Customer checkAccount(String str, String pass) {
+        for (Customer customer1: listCustomer) {
+            if((str.equals(customer1.getUsername())
+                    ||  str.equals(customer1.getEmail()))
+                    && pass.equals(customer1.getPassword())) {
+                return customer1;
+            }
+        }
+        return null;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import shoppingmall.services.ProductService;
+import shoppingmall.services.productService.ProductService;
 import shoppingmall.models.Product;
 
 

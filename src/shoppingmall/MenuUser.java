@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import shoppingmall.Account.SignUp;
-import shoppingmall.services.ProductService;
+import shoppingmall.services.productService.ProductService;
 import shoppingmall.models.Product;
 
 import static shoppingmall.utils.ValidationUtil.*;

@@ -1,5 +1,4 @@
 package shoppingmall.utils;
-
 import java.util.Scanner;
 
 public class InputUtil {

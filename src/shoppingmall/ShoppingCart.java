@@ -1,6 +1,6 @@
 package shoppingmall;
 
-import shoppingmall.services.ProductService;
+import shoppingmall.services.productService.ProductService;
 import shoppingmall.models.Product;
 
 import java.io.*;
