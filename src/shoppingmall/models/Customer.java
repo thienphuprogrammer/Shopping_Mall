@@ -2,7 +2,7 @@ package shoppingmall.models;
 
 import java.io.Serializable;
 
-import static shoppingmall.Account.AccountUser.AccountUser;
+//import static shoppingmall.Account.AccountUser.AccountUser;
 
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L; // added serialVersionUID field

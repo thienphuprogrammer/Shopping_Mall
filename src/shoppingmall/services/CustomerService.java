@@ -1,12 +1,8 @@
 package shoppingmall.services;
-
-import shoppingmall.Account.SignUp;
 import shoppingmall.models.Customer;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import static shoppingmall.utils.FileUtil.loadFileObject;
+import static shoppingmall.utils.FileUtil.*;
 import static shoppingmall.utils.InputUtil.*;
 import static shoppingmall.utils.ValidationUtil.*;
 

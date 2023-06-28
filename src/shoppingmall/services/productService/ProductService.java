@@ -9,7 +9,7 @@ import static shoppingmall.utils.FileUtil.*;
 
 public class ProductService {
     protected ArrayList<Product> listProduct = new ArrayList<>();
-    protected String filename = "";
+    protected String filename = "../data/product.txt";
 
     public ArrayList<Product> getListProduct() {
         return listProduct;
@@ -29,6 +29,15 @@ public class ProductService {
 
     public int getSize() {
         return listProduct.size();
+    }
+
+    public ProductService() {
+        ;
+    }
+
+    public ProductService(String filename) {
+        this.filename = filename;
+        loadListProduct();
     }
 
     public void addProduct(Product product) {
