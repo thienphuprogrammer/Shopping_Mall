@@ -3,20 +3,31 @@ package shoppingmall.models;
 import java.io.Serializable;
 
 public class Product implements Serializable {
-    private static final long serialVersionUID = 1L; // added serialVersionUID field
-    private String name;
-    private String type;
-    private String description;
-    private int id;
-    private float price;
-    private int count;
-    private float rate;
+    protected static final long serialVersionUID = 1L; // added serialVersionUID field
+    protected String name;
+    protected String type;
+    protected String description;
+    protected int id;
+    protected float price;
+    protected int count;
+    protected float rate;
+
     public Product() {
         // Default constructor with default values
         this("", "", "", 0, 0.0f, 0, 0);
     }
 
-    public Product(String name, String type, String description, int id, float price, int count, int rate) {
+    public Product(Product product) {
+        this.name = product.name;
+        this.type = product.type;
+        this.description = product.description;
+        this.id = product.id;
+        this.price = product.price;
+        this.count = product.count;
+        this.rate = product.rate;
+    }
+
+    public Product(String name, String type, String description, int id, float price, int count, float rate) {
         this.name = name;
         this.type = type;
         this.description = description;
@@ -84,7 +95,8 @@ public class Product implements Serializable {
         // Xử lý mô tả nếu vượt quá kích thước cột
         if (description.length() > 25) {
             String truncatedDescription = description.substring(0, 22) + "...";
-            System.out.println(" Description : " + truncatedDescription + " ".repeat(25 - truncatedDescription.length()) + "|");
+            System.out.println(
+                    " Description : " + truncatedDescription + " ".repeat(25 - truncatedDescription.length()) + "|");
         } else {
             System.out.println(" Description : " + description + " ".repeat(25 - description.length()) + "|");
         }

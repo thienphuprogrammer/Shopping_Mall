@@ -1,17 +1,22 @@
 package shoppingmall.services;
+
+import shoppingmall.models.Order;
 import shoppingmall.models.Product;
 import shoppingmall.services.productService.ProductService;
 
 import static shoppingmall.utils.FileUtil.*;
+import static shoppingmall.utils.InputUtil.*;
+import static shoppingmall.views.StandardView.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-public class OrderService extends ProductService {
+public class OrderService implements AutoCloseable{
+    private String filename;
     private int idUser = -1;
-    private HashMap<Integer, ArrayList<Product>> hashMap;
-//    private ArrayList<Product> listCart = new ArrayList<>();
+    private HashMap<Integer, ArrayList<Order>> hashMap;
+    private ArrayList<Order> listOrder = new ArrayList<>();
 
     public int getIdUser() {
         return idUser;
@@ -21,98 +26,106 @@ public class OrderService extends ProductService {
         this.idUser = idUser;
     }
 
+    public ArrayList<Order> getListOrder() {
+        return listOrder;
+    }
+
+    public void setListOrder(ArrayList<Order> listOrder) {
+        this.listOrder = listOrder;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public OrderService(String filename, int userID) {
+        this.filename = filename;
+        this.idUser = userID;
+        loadListOrder();
+    }
+
     public void addItem(Product product) {
-        boolean isFind = false;
-        for (Product value : listProduct) {
-            if (product.getId() == value.getId()) {
-                value.setCount(value.getCount() + 1);
-                isFind = true;
+        addItem(product, 1); // Call the overloaded method with a default value of 1
+    }
+
+    public void addItem(Product product, int totalAmount) {
+        boolean isFound = false;
+        for (Order order : listOrder) {
+            if (product.getId() == order.getCustomerId()) {
+                order.setTotalAmount(order.getTotalAmount() + 1);
+                isFound = true;
             }
         }
-        if(!isFind) {
-            this.listProduct.add(product);
+        if (!isFound) {
+            int orderId = listOrder.size();
+            String currentDate = LocalDate.now().toString();
+            this.listOrder.add(new Order(orderId, idUser, product, currentDate, totalAmount));
         }
     }
+
+    public void clearProduct() {
+        this.listOrder.clear();
+    }
     public boolean updateItemQuantity(int quantity, int idProduct) {
-        for (Product product : listProduct) {
-            if (idProduct == product.getId()) {
-                product.setCount(quantity);
+        for (Order order : listOrder) {
+            if (idProduct == order.getOrderId()
+                    && idUser == order.getCustomerId()) {
+                order.setTotalAmount(quantity);
                 return true;
             }
         }
         return false;
     }
 
-//    public void addToCart() {
-//        System.out.println("Thêm hàng vào giỏ...");
-//        // Code for adding items to cart
-//        int id = readInt("Nhập vào id của sản phẩm: ");
-//        for(Product product: listProduct) {
-//            if (product.getCount() > 0) {
-//                if(product.getId() == id) {
-//                    product.setCount(1);
-//                    listCart.add(product);
-//                    System.out.println("Đã thêm vào giỏ hàng. ");
-//                    break;
-//                }
-//            }
-//            else {
-//                System.out.println("Sản phẩm đã hết hàng!!!");
-//                break;
-//            }
-//
-//        }
-//    }
-
-    public void viewCart() {
-        System.out.println("Xem giỏ hàng...");
-        // Code for viewing the cart
-        showListProduct();
-        float sumPrice = 0;
-        for(Product product : listProduct) {
-            sumPrice += product.getPrice() * product.getCount();
+    public void viewOrder() {
+        if (listOrder.size() == 0) {
+            printValueln("Danh sách hàng mua đang trống!!!");
         }
-        System.out.println("Tổng giá tiền của hóa đơn là: " + sumPrice);
+        else {
+            for (Order order : listOrder) {
+                order.showOrder();
+            }
+        }
+    }
+    
+
+    public void buyProducts(ProductService productService) {
+        System.out.println("Mua hàng...");
+        String question = readString("Bạn có chắc là muốn mua hàng không (Y/N): ");
+        if (question.equals("Y") || question.equals("y")) {
+            // Code for buying products
+            for (Order product : listOrder) {
+                // productService.
+                // this.listProductBuying.addProduct(product);
+            }
+            this.listOrder.clear();
+            System.out.println("Đã mua hàng thành công!!!");
+        } else {
+            System.out.println("Đã hủy mua hàng!!!");
+        }
     }
 
-    public void clearCart() {
-        System.out.println("Xóa giỏ hàng...");
-        this.listProduct.clear();
-        System.out.println("Giỏ hàng đã được làm mới!!");
+    public void viewPurchaseHistory() {
+        System.out.println("Xem lịch sử mua hàng...");
+        // listBoughtHistory.showListProduct();
     }
 
-//    public void buyProducts() {
-//        System.out.println("Mua hàng...");
-//        String question = readString("Bạn có chắc là muốn mua hàng không (Y/N): ");
-//        if (question.equals("Y") || question.equals("y")) {
-//            // Code for buying products
-//            for(Product product: listProduct) {
-//                this.listProductBuying.addProduct(product);
-//            }
-//            this.listCart.clearCart();
-//            System.out.println("Đã mua hàng thành công!!!");
-//        } else {
-//            System.out.println("Đã hủy mua hàng!!!");
-//        }
-//    }
-//    public void viewPurchaseHistory() {
-//        System.out.println("Xem lịch sử mua hàng...");
-//        listBoughtHistory.showListProduct();
-//    }
-
-    public void loadListProduct() {
+    public void loadListOrder() {
         Object object = loadFileObject(filename);
-        if(object != null) {
-            this.hashMap = (HashMap<Integer, ArrayList<Product>>) object;
-            this.listProduct = hashMap.get(idUser);
+        if (object != null) {
+            this.hashMap = (HashMap<Integer, ArrayList<Order>>) object;
+            this.listOrder = hashMap.get(idUser);
         }
     }
 
-    public void saveListProduct(String filename) {
-        if(listProduct.size() > 0) {
-            this.hashMap.put(idUser, listProduct);
+    public void saveListOrder(String filename) {
+        if (listOrder.size() > 0) {
+            this.hashMap.put(idUser, listOrder);
             saveFileObject(filename, hashMap);
         }
-
     }
 }

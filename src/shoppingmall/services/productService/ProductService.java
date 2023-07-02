@@ -9,7 +9,7 @@ import static shoppingmall.utils.FileUtil.*;
 
 public class ProductService {
     protected ArrayList<Product> listProduct = new ArrayList<>();
-    protected String filename = "../data/product.txt";
+    protected String filename;
 
     public ArrayList<Product> getListProduct() {
         return listProduct;
@@ -60,35 +60,33 @@ public class ProductService {
         }
     }
 
+    public void clear() {
+        this.listProduct.clear();
+    }
+
     public void searchProducts(String str) {
-        ProductService newList = this;
+        ArrayList<Product> newList = new ArrayList<>();
 
         for (Product product : listProduct) {
             if (str.equals(String.valueOf(product.getId()))
                     || product.getName().equals(str)) {
-                newList.addProduct(product);
+                newList.add(product);
             }
         }
-        if (newList.getSize() == 0) {
+        if (newList.size() == 0) {
             System.out.println("Không tìm thấy sản phẩm mà bạn đã cung cấp thông tin");
         }
         else {
-            System.out.println("Có " + newList.getSize() + " sản phẩm có thông tin giống trên: ");
-            for(Product product : newList.getListProduct()){
+            System.out.println("Có " + newList.size() + " sản phẩm có thông tin giống trên: ");
+            for(Product product : newList){
                 product.showProduct();
             }
         }
     }
 
     public void showListProduct() {
-        boolean found = false;
         for (Product product : listProduct) {
             product.showProduct();
-            found = true;
-        }
-
-        if (!found) {
-            System.out.println("Không tìm thấy sản phẩm với ID đã nhập.\n");
         }
     }
 

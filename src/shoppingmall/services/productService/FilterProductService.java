@@ -5,6 +5,7 @@ import shoppingmall.models.Product;
 import java.util.ArrayList;
 
 import static shoppingmall.utils.InputUtil.*;
+import static shoppingmall.views.StandardView.*;
 
 public class FilterProductService {
     private ProductService newList = new ProductService();
@@ -28,28 +29,6 @@ public class FilterProductService {
 
     public FilterProductService(ProductService listProduct1) {
         this.listProduct = listProduct1.getListProduct();
-    }
-
-    void menuFilter() {
-        System.out.println("+----------------------------------------+");
-        System.out.println("|   Nhập 0 để trở về menu.               |");
-        System.out.println("|   Nhập 1 để lọc sản phẩm theo số lượng.|");
-        System.out.println("|   Nhập 2 để lọc sản phẩm theo giá.     |");
-        System.out.println("|   Nhập 3 để lọc sản phẩm theo loại.    |");
-        System.out.println("+----------------------------------------+");
-        int choice = readInt("Sự lựa chọn của bạn: ");
-
-        if (choice == 0) {
-            return;
-        } else if (choice == 1) {
-            filterCount();
-        } else if (choice == 2) {
-            filterPrice();
-        } else {
-            filterType();
-        }
-        newList.showListProduct();
-        new FilterProductService(newList);
     }
 
     public void filterCount() {
