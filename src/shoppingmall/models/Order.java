@@ -1,6 +1,9 @@
 package shoppingmall.models;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable {
+    protected static final long serialVersionUID = 1L; // added serialVersionUID field
     private int orderId;
     private int customerId;
     private String orderDate;

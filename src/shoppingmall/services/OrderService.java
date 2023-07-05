@@ -2,22 +2,21 @@ package shoppingmall.services;
 
 import shoppingmall.models.Order;
 import shoppingmall.models.Product;
-import shoppingmall.services.productService.ProductService;
 
 import static shoppingmall.utils.FileUtil.*;
-import static shoppingmall.utils.InputUtil.*;
-import static shoppingmall.views.StandardView.*;
+import static shoppingmall.utils.OutputUtil.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class OrderService implements AutoCloseable{
+public class OrderService {
+//    -----------------------Property--------------------------
     private String filename;
     private int idUser = -1;
-    private HashMap<Integer, ArrayList<Order>> hashMap;
+    private HashMap<Integer, ArrayList<Order>> hashMap = new HashMap<>();
     private ArrayList<Order> listOrder = new ArrayList<>();
-
+//    ------------------------Setter and Getter ----------------------------
     public int getIdUser() {
         return idUser;
     }
@@ -42,11 +41,20 @@ public class OrderService implements AutoCloseable{
         this.filename = filename;
     }
 
+//    ---------------------Constructor-------------------------------
     public OrderService(String filename, int userID) {
         this.filename = filename;
         this.idUser = userID;
         loadListOrder();
     }
+
+    public OrderService(int idUser) {
+        this.filename = "data/card.bin";
+        this.idUser = idUser;
+        loadListOrder();
+    }
+
+//    --------------------------Method---------------------------------
 
     public void addItem(Product product) {
         addItem(product, 1); // Call the overloaded method with a default value of 1
@@ -69,6 +77,7 @@ public class OrderService implements AutoCloseable{
 
     public void clearProduct() {
         this.listOrder.clear();
+        saveListOrder();
     }
     public boolean updateItemQuantity(int quantity, int idProduct) {
         for (Order order : listOrder) {
@@ -91,23 +100,6 @@ public class OrderService implements AutoCloseable{
             }
         }
     }
-    
-
-    public void buyProducts(ProductService productService) {
-        System.out.println("Mua hàng...");
-        String question = readString("Bạn có chắc là muốn mua hàng không (Y/N): ");
-        if (question.equals("Y") || question.equals("y")) {
-            // Code for buying products
-            for (Order product : listOrder) {
-                // productService.
-                // this.listProductBuying.addProduct(product);
-            }
-            this.listOrder.clear();
-            System.out.println("Đã mua hàng thành công!!!");
-        } else {
-            System.out.println("Đã hủy mua hàng!!!");
-        }
-    }
 
     public void viewPurchaseHistory() {
         System.out.println("Xem lịch sử mua hàng...");
@@ -122,8 +114,12 @@ public class OrderService implements AutoCloseable{
         }
     }
 
-    public void saveListOrder(String filename) {
-        if (listOrder.size() > 0) {
+    public void saveListOrder() {
+        if (listOrder == null || listOrder.isEmpty() || idUser < 0) {
+            return; // Nothing to save
+        }
+
+        if (filename != null && hashMap != null) {
             this.hashMap.put(idUser, listOrder);
             saveFileObject(filename, hashMap);
         }

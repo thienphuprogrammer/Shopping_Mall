@@ -8,13 +8,14 @@ import java.util.Iterator;
 import static shoppingmall.utils.FileUtil.*;
 
 public class ProductService {
+//    -----------------------Property----------------------------
     protected ArrayList<Product> listProduct = new ArrayList<>();
     protected String filename;
 
     public ArrayList<Product> getListProduct() {
         return listProduct;
     }
-
+//    ------------------------Getter and Setter----------------------
     public void setListProduct(ArrayList<Product> listProduct) {
         this.listProduct = listProduct;
     }
@@ -31,8 +32,10 @@ public class ProductService {
         return listProduct.size();
     }
 
+//    ---------------------Constructor----------------------------------
     public ProductService() {
-        ;
+        this.filename = "data/product.bin";
+        loadListProduct();
     }
 
     public ProductService(String filename) {
@@ -40,6 +43,7 @@ public class ProductService {
         loadListProduct();
     }
 
+//    ----------------------------Method----------------------------
     public void addProduct(Product product) {
         this.listProduct.add(product);
     }

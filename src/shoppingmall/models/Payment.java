@@ -1,10 +1,14 @@
 package shoppingmall.models;
 
-public class Payment {
+import java.io.Serializable;
+
+public class Payment implements Serializable {
+    protected static final long serialVersionUID = 1L; // added serialVersionUID field
+
     private int paymentId;
-    private int order;
-    private int paymentDate;
-    private float paymentAmount;
+    private Product product;
+    private String paymentDate;
+    private int customerId;
 
     public int getPaymentId() {
         return paymentId;
@@ -14,34 +18,34 @@ public class Payment {
         this.paymentId = paymentId;
     }
 
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
-    public int getPaymentDate() {
+    public String getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(int paymentDate) {
+    public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
     }
 
-    public float getPaymentAmount() {
-        return paymentAmount;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setPaymentAmount(float paymentAmount) {
-        this.paymentAmount = paymentAmount;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public Payment(int paymentId, int order, int paymentDate, float paymentAmount) {
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public Payment(int paymentId, Product product, String paymentDate, int customerId) {
         this.paymentId = paymentId;
-        this.order = order;
+        this.product = product;
         this.paymentDate = paymentDate;
-        this.paymentAmount = paymentAmount;
+        this.customerId = customerId;
     }
 }

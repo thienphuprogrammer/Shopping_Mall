@@ -5,7 +5,6 @@ import shoppingmall.models.Product;
 import java.util.ArrayList;
 
 import static shoppingmall.utils.InputUtil.*;
-import static shoppingmall.views.StandardView.*;
 
 public class FilterProductService {
     private ProductService newList = new ProductService();
