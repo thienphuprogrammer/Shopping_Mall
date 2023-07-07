@@ -32,6 +32,7 @@ public class InputUtil {
             scanner.nextLine(); // Xóa bộ nhớ đệm sau khi nhập số thực
         } catch (Exception e) {
             System.out.println("Lỗi: " + e.getMessage());
+            scanner.nextLine(); // Xóa bộ nhớ đệm nếu có lỗi xảy ra
         }
         return input;
     }
@@ -44,6 +45,7 @@ public class InputUtil {
             scanner.nextLine(); // Xóa bộ nhớ đệm sau khi nhập số thực
         } catch (Exception e) {
             System.out.println("Lỗi: " + e.getMessage());
+            scanner.nextLine(); // Xóa bộ nhớ đệm nếu có lỗi xảy ra
         }
         return input;
     }
