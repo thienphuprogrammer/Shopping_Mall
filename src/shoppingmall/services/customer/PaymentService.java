@@ -1,12 +1,10 @@
-package shoppingmall.services;
+package shoppingmall.services.customer;
 
-import shoppingmall.models.Order;
-import shoppingmall.models.Payment;
-import shoppingmall.models.Product;
+import shoppingmall.models.customer.Order;
+import shoppingmall.models.customer.Payment;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static shoppingmall.utils.FileUtil.loadFileObject;
 import static shoppingmall.utils.FileUtil.saveFileObject;
@@ -16,8 +14,8 @@ import static shoppingmall.utils.OutputUtil.printValueln;
 public class PaymentService {
     // -----------------Property------------------
     private ArrayList<Payment> listPayment = new ArrayList<>();
-    private HashMap<Integer, ArrayList<Payment>> hashMap = new HashMap<>();
-    private String filename;
+    private ArrayList <Payment> newListPayment = new ArrayList<>();
+    private String filenameOrder;
     private int idUser;
 
     // -----------------Getter and setter--------------
@@ -32,7 +30,7 @@ public class PaymentService {
 
     // -----------------Constructor-------------------
     public PaymentService(String filename, int idUser) {
-        this.filename = filename;
+        this.filenameOrder = filename;
         this.idUser = idUser;
         loadListPayment();
     }
@@ -41,7 +39,7 @@ public class PaymentService {
     public void buyProducts(ArrayList<Order> orders, int idUser) {
         for(Order order: orders) {
             String currentDate = LocalDate.now().toString();
-            listPayment.add(new Payment(listPayment.size(), order.getProduct(), currentDate, idUser));
+            newListPayment.add(new Payment(newListPayment.size(), order.getProduct(), currentDate, idUser));
         }
         saveListPayment();
     }
@@ -60,21 +58,25 @@ public class PaymentService {
     }
 
     public void loadListPayment() {
-        Object object = loadFileObject(filename);
+        Object object = loadFileObject(filenameOrder);
         if (object != null) {
-            this.hashMap = (HashMap<Integer, ArrayList<Payment>>) object;
-            this.listPayment = hashMap.get(idUser);
+            newListPayment = (ArrayList<Payment>) object;
+        }
+
+        for (Payment payment: newListPayment) {
+            if (payment.getCustomerId() == idUser) {
+                listPayment.add(payment);
+            }
         }
     }
 
     public void saveListPayment() {
-        if (listPayment == null || listPayment.isEmpty() || idUser < 0) {
+        if (idUser < 0) {
             return; // Nothing to save
         }
 
-        if (filename != null && hashMap != null) {
-            this.hashMap.put(idUser, listPayment);
-            saveFileObject(filename, hashMap);
+        if (filenameOrder != null) {
+            saveFileObject(filenameOrder, newListPayment);
         }
     }
 }

@@ -1,5 +1,5 @@
-package shoppingmall.services;
-import shoppingmall.models.Customer;
+package shoppingmall.services.customer;
+import shoppingmall.models.customer.Customer;
 
 import java.util.ArrayList;
 

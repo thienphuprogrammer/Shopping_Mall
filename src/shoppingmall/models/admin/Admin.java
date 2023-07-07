@@ -1,6 +1,10 @@
-package shoppingmall.models;
+package shoppingmall.models.admin;
 
-public class Admin {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Admin implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L; // added serialVersionUID field
 //    ---------------------Property----------------------
     protected String username;
@@ -8,11 +12,11 @@ public class Admin {
     protected String email;
     protected String fullName;
     protected String identityNumber;
-    protected String adminID;
+    protected int adminID;
 
 //    ---------------------Constructor------------------
 
-    public Admin(String username, String password, String email, String fullName, String identityNumber, String adminID) {
+    public Admin(String username, String password, String email, String fullName, String identityNumber, int adminID) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -64,11 +68,11 @@ public class Admin {
         this.identityNumber = identityNumber;
     }
 
-    public String getAdminID() {
+    public int getAdminID() {
         return adminID;
     }
 
-    public void setAdminID(String adminID) {
+    public void setAdminID(int adminID) {
         this.adminID = adminID;
     }
 }

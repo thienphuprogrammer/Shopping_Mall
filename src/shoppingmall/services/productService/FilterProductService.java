@@ -1,6 +1,6 @@
 package shoppingmall.services.productService;
 
-import shoppingmall.models.Product;
+import shoppingmall.models.product.Product;
 
 import java.util.ArrayList;
 

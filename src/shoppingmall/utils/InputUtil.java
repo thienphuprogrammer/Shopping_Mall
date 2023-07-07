@@ -6,13 +6,16 @@ public class InputUtil {
 
     public static int readInt(String message) {
         System.out.print(message);
-        int input = 0;
-        try {
-            input = scanner.nextInt();
-            scanner.nextLine(); // Xóa bộ nhớ đệm sau khi nhập số nguyên
-        } catch (Exception e) {
-            System.out.println("Lỗi: " + e.getMessage());
-        }
+        int input = -1;
+
+            try {
+                input = scanner.nextInt();
+                scanner.nextLine(); // Xóa bộ nhớ đệm sau khi nhập số nguyên
+            } catch (Exception e) {
+                System.out.println("Lỗi: " + e.getMessage());
+                scanner.nextLine(); // Xóa bộ nhớ đệm nếu có lỗi xảy ra
+            }
+
         return input;
     }
 

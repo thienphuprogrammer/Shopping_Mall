@@ -1,4 +1,4 @@
-package shoppingmall.models;
+package shoppingmall.models.customer;
 
 import java.io.Serializable;
 
