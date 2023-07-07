@@ -1,6 +1,6 @@
 package shoppingmall.services.productService;
 
-import shoppingmall.models.Product;
+import shoppingmall.models.product.Product;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -91,6 +91,14 @@ public class ProductService {
     public void showListProduct() {
         for (Product product : listProduct) {
             product.showProduct();
+        }
+    }
+
+    public void editInfo(int idProduct, Product product) {
+        for (int i = 0; i < listProduct.size(); i++) {
+            if(listProduct.get(i).getId() == idProduct) {
+                listProduct.set(i, product);
+            }
         }
     }
 

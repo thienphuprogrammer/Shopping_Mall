@@ -1,7 +1,7 @@
-package shoppingmall.services;
+package shoppingmall.services.customer;
 
-import shoppingmall.models.Order;
-import shoppingmall.models.Product;
+import shoppingmall.models.customer.Order;
+import shoppingmall.models.product.Product;
 
 import static shoppingmall.utils.FileUtil.*;
 import static shoppingmall.utils.OutputUtil.*;

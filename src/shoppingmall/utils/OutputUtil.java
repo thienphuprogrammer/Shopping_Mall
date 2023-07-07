@@ -11,6 +11,9 @@ public class OutputUtil {
         readString("");
         for (int i = 0; i < 100; i++) System.out.println(" ");
     }
+    public static void clearScreen() {
+        for (int i = 0; i < 100; i++) System.out.println(" ");
+    }
 
     public static void printLineSeparate() {
         System.out.println("+" + "-".repeat(length - 2) + "+");

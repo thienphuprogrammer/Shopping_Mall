@@ -1,51 +1,31 @@
-import shoppingmall.services.CustomerService;
+import shoppingmall.services.admin.AdminService;
 import shoppingmall.services.productService.ProductService;
+import shoppingmall.views.admin.AdminView;
+import shoppingmall.views.customer.CustomerView;
 
-import static shoppingmall.utils.InputUtil.readInt;
-import static shoppingmall.views.LogInView.*;
-import static shoppingmall.views.CustomerView.*;
-import static shoppingmall.views.SignUpView.signUpCustomerView;
+import static shoppingmall.utils.InputUtil.*;
 import static shoppingmall.utils.OutputUtil.*;
+
 
 public class Main {
     public static void main(String[] args) {
+//        Admin admin = new Admin("admin123","123","admin@gmail.com","admin","1234567890",0);
+//        AdminService adminService = new AdminService("data/admin.bin",admin);
+//        adminService.saveListCustomer();
         while (true) {
-//            -------------------Start Program------------------
-            ProductService productCustomer = new ProductService("data/product.bin");
-
-
-//            ----------------------Shop-------------------------
-
-
-//           -------------------- Customer--------------------------
-//            Account
-            CustomerService customerService = new CustomerService();
-            boolean statusLogin = false;
             printLineSeparate("Menu");
-            printValueMenu("0 de tro ve trang chu");
-            printValueMenu("1 Dang nhap vao tai khoan customer");
-            printValueMenu("2 Dang ky vao tai khoan customer");
+            printValueMenu("0 de thoat khoai chuong trinh");
+            printValueMenu("1 de dang nhap tai khoan admin");
+            printValueMenu("2 de dang nhap tai khoan khach hang");
             printLineSeparate();
-
-            int choice = readInt("Sự lựa chọn của bạn: ");
-            if (choice == 1) {
-                customerService = loginCustomerView("data/customer.bin");
-                if (customerService != null) {
-                    statusLogin = true;
-                } else {
-                    continue;
-                }
-            } else if (choice == 2) {
-                signUpCustomerView("data/customer.bin");
-            } else {
-                break;
-            }
-
-//            Product
-            if (statusLogin) {
-                InitCustomer(productCustomer, customerService);
-                showViewCustomer();
-                productCustomer.saveListProduct();
+            int choice = readInt("Su lua chon cua ban: ");
+            clearScreen();
+//            -------------------Start Program------------------
+            if(choice == 1) {
+                AdminView.showViewAdmin();
+            } else if(choice == 2) {
+                CustomerView.showViewCustomer();
+            } else if (choice == 0){
                 break;
             }
 

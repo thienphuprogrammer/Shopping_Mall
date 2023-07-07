@@ -1,7 +1,7 @@
 package shoppingmall.views;
 
-import shoppingmall.models.Customer;
-import shoppingmall.services.CustomerService;
+import shoppingmall.models.customer.Customer;
+import shoppingmall.services.customer.CustomerService;
 
 import static shoppingmall.utils.InputUtil.*;
 import static shoppingmall.utils.OutputUtil.*;

@@ -6,7 +6,7 @@ public class InputUtil {
 
     public static int readInt(String message) {
         System.out.print(message);
-        int input = 0;
+        int input = -1;
         try {
             input = scanner.nextInt();
             scanner.nextLine(); // Xóa bộ nhớ đệm sau khi nhập số nguyên

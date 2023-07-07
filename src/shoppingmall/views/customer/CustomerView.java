@@ -1,16 +1,19 @@
-package shoppingmall.views;
+package shoppingmall.views.customer;
 
-import shoppingmall.models.Customer;
-import shoppingmall.models.Order;
-import shoppingmall.models.Product;
-import shoppingmall.services.CustomerService;
-import shoppingmall.services.OrderService;
-import shoppingmall.services.PaymentService;
+import shoppingmall.models.customer.Customer;
+import shoppingmall.models.customer.Order;
+import shoppingmall.models.product.Product;
+import shoppingmall.services.customer.CustomerService;
+import shoppingmall.services.customer.OrderService;
+import shoppingmall.services.customer.PaymentService;
 import shoppingmall.services.productService.FilterProductService;
 import shoppingmall.services.productService.ProductService;
+import shoppingmall.views.AccountView;
 
 import static shoppingmall.utils.InputUtil.*;
 import static shoppingmall.utils.OutputUtil.*;
+import static shoppingmall.views.LogInView.loginCustomerView;
+import static shoppingmall.views.SignUpView.signUpCustomerView;
 
 public class CustomerView {
 
@@ -20,7 +23,7 @@ public class CustomerView {
     private static OrderService orderService;
     private static CustomerService customerService;
     private static PaymentService paymentService;
-
+    private static PaymentService boughtProducts;
 //    ------------------Set getter and setter of class-----------------------------------
 
     public static Customer getCustomer() {
@@ -63,13 +66,13 @@ public class CustomerView {
     }
 
     //    -----------------Constructor-------------------------
-    public static void InitCustomer(ProductService productCustomer, CustomerService customerService) {
-        CustomerView.productCustomer = productCustomer;
-        CustomerView.customerService = customerService;
+    public static void InitCustomer() {
+
         CustomerView.customer = customerService.getCustomer();
         CustomerView.orderService = new OrderService("data/cart.bin", customer.getCustomerId());
         CustomerView.productCustomer = new ProductService("data/product.bin");
         CustomerView.paymentService = new PaymentService("data/product_is_buying.bin", customer.getCustomerId());
+        CustomerView.boughtProducts = new PaymentService("data/product_bought.bin", customer.getCustomerId());
     }
 //    --------------------------Declare method of class------------------------------
     public static enum MENU_CUSTOMER_SHEET {
@@ -106,14 +109,50 @@ public class CustomerView {
         return readInt("Sự lựa chọn của bạn: ");
     }
     public static void showViewCustomer() {
+        while(true) {
+            boolean statusLogin = false;
+            printLineSeparate("Menu");
+            printValueMenu("0 de tro ve trang chu");
+            printValueMenu("1 Dang nhap vao tai khoan customer");
+            printValueMenu("2 Dang ky vao tai khoan customer");
+            printLineSeparate();
+
+            int choice = readInt("Sự lựa chọn của bạn: ");
+            if (choice == 1) {
+                customerService = loginCustomerView("data/customer.bin");
+                if (customerService != null) {
+                    statusLogin = true;
+                } else {
+                    continue;
+                }
+            } else if (choice == 2) {
+                if(signUpCustomerView("data/customer.bin")) {
+                    printValueln("Dang ki thanh cong!!!");
+                } else {
+                    printValueln("Dang ki that bai!!");
+                }
+            } else {
+                break;
+            }
+
+//            Product
+            if (statusLogin) {
+                InitCustomer();
+                handleChoiceCustomer();
+                productCustomer.saveListProduct();
+            }
+        }
+    }
+
+    private static void handleChoiceCustomer() {
         while (true) {
             int choice = getCustomerChoice();
             if (choice == MENU_CUSTOMER_SHEET.EDIT_INFO_ACC.ordinal()) {
-                 editInfoCustomer();
+                editInfoCustomer();
             } else if (choice == MENU_CUSTOMER_SHEET.VIEW_INFO_ACC.ordinal()) {
-                 viewInfoCustomer();
+                viewInfoCustomer();
             } else if (choice == MENU_CUSTOMER_SHEET.VIEW_PRODUCT_BUYING.ordinal()) {
-                // user.viewListBuying();
+                viewListBuying();
             } else if (choice == MENU_CUSTOMER_SHEET.EXIST.ordinal()) {
                 returnToHomePage();
                 break;
@@ -130,9 +169,9 @@ public class CustomerView {
             } else if (choice == MENU_CUSTOMER_SHEET.VIEW_CART.ordinal()) {
                 viewCart();
             } else if (choice == MENU_CUSTOMER_SHEET.BUY_PRODUCT.ordinal()) {
-                 buyProducts();
+                buyProducts();
             } else if (choice == MENU_CUSTOMER_SHEET.HISTORY_BOUGHT.ordinal()) {
-                 viewPurchaseHistory();
+                viewPurchaseHistory();
             } else if (choice == MENU_CUSTOMER_SHEET.LOG_OUT.ordinal()) {
 
             } else {
@@ -140,14 +179,19 @@ public class CustomerView {
             }
             waitForInput();
         }
+
     }
 
     private static void buyProducts() {
-        printValueln("Mua hàng...");
+        viewCart();
+        if(orderService.getListOrder().size() == 0) {
+            return;
+        }
         String question = readString("Bạn có chắc là muốn mua hàng không (Y/N): ");
         if (question.equals("Y") || question.equals("y")) {
             paymentService.buyProducts(orderService.getListOrder(), customer.getCustomerId());
             orderService.clearProduct();
+            printValueln("Da mua hang thanh cong");
 
         }  else {
             printValueln("Đã hủy mua hàng!!!");
@@ -155,6 +199,10 @@ public class CustomerView {
     }
 
     private static void viewPurchaseHistory() {
+        boughtProducts.viewPayment();
+    }
+
+    private static void viewListBuying() {
         paymentService.viewPayment();
     }
 
@@ -211,7 +259,7 @@ public class CustomerView {
         int id = readInt("Nhập vào id của sản phẩm: ");
         int count = readInt("Nhập so luong san pham can mua: ");
         for (Product product : productCustomer.getListProduct()) {
-            if (product.getCount() > 0) {
+            if (product.getCount() - count> 0) {
                 if (product.getId() == id) {
                     product.setCount(1);
                     orderService.addItem(product, count);
@@ -227,7 +275,6 @@ public class CustomerView {
     }
 
     public static void viewCart() {
-        System.out.println("Xem giỏ hàng...");
         // Code for viewing the cart
         orderService.viewOrder();
 

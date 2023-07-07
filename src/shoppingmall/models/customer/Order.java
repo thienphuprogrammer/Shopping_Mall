@@ -1,14 +1,16 @@
-package shoppingmall.models;
+package shoppingmall.models.customer;
+
+import shoppingmall.models.product.Product;
 
 import java.io.Serializable;
 
 public class Order implements Serializable {
     protected static final long serialVersionUID = 1L; // added serialVersionUID field
-    private int orderId;
-    private int customerId;
-    private String orderDate;
-    private Product product;
-    private int totalAmount;
+    protected int orderId;
+    protected int customerId;
+    protected String orderDate;
+    protected Product product;
+    protected int totalAmount;
 
     public int getOrderId() {
         return orderId;
@@ -59,20 +61,20 @@ public class Order implements Serializable {
     }
 
     public void showOrder() {
-        System.out.print("| Name : " + product.name + " ".repeat(25 - String.valueOf(product.name).length()) + "|");
-        System.out.print(" id : " + product.id + " ".repeat(25 - String.valueOf(product.id).length()) + "|");
-        System.out.print(" Type : " + product.type + " ".repeat(25 - product.type.length()) + "|");
-        System.out.print(" Price : " + product.price + " ".repeat(25 - String.valueOf(product.price).length()) + "|");
+        System.out.print("| Name : " + product.getName() + " ".repeat(25 - String.valueOf(product.getName()).length()) + "|");
+        System.out.print(" id : " + product.getId() + " ".repeat(25 - String.valueOf(product.getId()).length()) + "|");
+        System.out.print(" Type : " + product.getType() + " ".repeat(25 - product.getType().length()) + "|");
+        System.out.print(" Price : " + product.getPrice() + " ".repeat(25 - String.valueOf(product.getPrice()).length()) + "|");
         System.out.print(" Count : " + totalAmount + " ".repeat(25 - String.valueOf(totalAmount).length()) + "|");
 
         // Xử lý mô tả nếu vượt quá kích thước cột
-        if (product.description.length() > 25) {
-            String truncatedDescription = product.description.substring(0, 22) + "...";
+        if (product.getDescription().length() > 25) {
+            String truncatedDescription = product.getDescription().substring(0, 22) + "...";
             System.out.println(
                     " Description : " + truncatedDescription + " ".repeat(25 - truncatedDescription.length()) + "|");
         } else {
             System.out.println(
-                    " Description : " + product.description + " ".repeat(25 - product.description.length()) + "|");
+                    " Description : " + product.getDescription() + " ".repeat(25 - product.getDescription().length()) + "|");
         }
     }
 }
